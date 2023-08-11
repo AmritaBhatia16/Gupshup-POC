@@ -21,6 +21,7 @@ public class WhatsAppService {
     private String apiKey;
     @Value("${gupshup.api.endpoint}")
     private String apiEndpoint;
+    private String appName = "TestApp0408";
 
     public String sendWhatsAppMessage(WhatsAppMessage message) {
 
@@ -61,7 +62,7 @@ public class WhatsAppService {
     }
 
 
-    public String optInUser(String appName, String user) {
+    public String optInUser(String user) {
 
         String endpoint = "https://api.gupshup.io/sm/api/v1/app/opt/in/" + appName;
 
