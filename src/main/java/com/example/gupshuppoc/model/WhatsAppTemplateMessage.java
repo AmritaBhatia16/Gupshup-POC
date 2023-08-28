@@ -1,11 +1,9 @@
 package com.example.gupshuppoc.model;
 
-public record WhatsAppMessage(
+public record WhatsAppTemplateMessage(
         String srcName,
-        String channel,
         String source,
         String destination,
+        Object template,
         Object message
-//        Boolean disablePreview,
-//        Boolean encode
 ) {}

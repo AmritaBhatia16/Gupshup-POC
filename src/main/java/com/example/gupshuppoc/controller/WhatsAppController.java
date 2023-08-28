@@ -1,10 +1,11 @@
 package com.example.gupshuppoc.controller;
 
 import com.example.gupshuppoc.model.WhatsAppMessage;
+import com.example.gupshuppoc.model.WhatsAppTemplateMessage;
 import com.example.gupshuppoc.service.WhatsAppService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,9 +24,20 @@ public class WhatsAppController {
         return whatsAppService.sendWhatsAppMessage(message);
     }
 
-    @PostMapping(path="opt-in")
+    @PostMapping(path="/send/template")
+    public @ResponseBody String sendTemplate(@RequestBody WhatsAppTemplateMessage message) {
+        //System.out.println(message);
+        return whatsAppService.sendTemplateMessage(message);
+    }
+
+    @PostMapping(path="/opt-in")
     public @ResponseBody String optInUser(@RequestParam String user) {
         return whatsAppService.optInUser(user);
+    }
+
+    @GetMapping(path="/template/list")
+    public @ResponseBody String getTemplateList() {
+        return whatsAppService.getTemplateList();
     }
 
 }
