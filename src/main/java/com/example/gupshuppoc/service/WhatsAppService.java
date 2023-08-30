@@ -28,6 +28,8 @@ public class WhatsAppService {
     private String templateMessageEndpoint;
     @Value("${gupshup.app.name}")
     private String appName;
+    @Value("${whatsapp.business.phone.number}")
+    private String businessPhoneNumber;
 
     private final RestTemplate restTemplate = new RestTemplate();
     private final ObjectMapper objectMapper = new ObjectMapper();
@@ -49,9 +51,9 @@ public class WhatsAppService {
 
             MultiValueMap<String, String> map = new LinkedMultiValueMap<>();
             map.add("message", objectMapper.writeValueAsString(message.message()));
-            map.add("src.name", message.srcName());
+            map.add("src.name", appName);
             map.add("channel", message.channel());
-            map.add("source", message.source());
+            map.add("source", businessPhoneNumber);
             map.add("destination", message.destination());
 
             HttpEntity<MultiValueMap<String, String>> requestEntity = new HttpEntity<>(map, headers);
@@ -84,8 +86,8 @@ public class WhatsAppService {
             MultiValueMap<String, String> map = new LinkedMultiValueMap<>();
             map.add("template", objectMapper.writeValueAsString(message.template()));
             map.add("message", objectMapper.writeValueAsString(message.message()));
-            map.add("src.name", message.srcName());
-            map.add("source", message.source());
+            map.add("src.name", appName);
+            map.add("source", businessPhoneNumber);
             map.add("destination", message.destination());
 
             HttpEntity<MultiValueMap<String, String>> requestEntity = new HttpEntity<>(map, headers);
