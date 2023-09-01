@@ -1,5 +1,6 @@
 package com.example.gupshuppoc.controller;
 
+import com.example.gupshuppoc.model.WhatsAppMessageResponse;
 import com.example.gupshuppoc.model.WhatsAppMessage;
 import com.example.gupshuppoc.model.WhatsAppTemplateMessage;
 import com.example.gupshuppoc.service.WhatsAppService;
@@ -20,13 +21,12 @@ public class WhatsAppController {
     private WhatsAppService whatsAppService;
 
     @PostMapping(path="/send")
-    public @ResponseBody String sendWhatsApp(@RequestBody WhatsAppMessage message) {
+    public @ResponseBody WhatsAppMessageResponse sendWhatsApp(@RequestBody WhatsAppMessage message) {
         return whatsAppService.sendWhatsAppMessage(message);
     }
 
     @PostMapping(path="/send/template")
-    public @ResponseBody String sendTemplate(@RequestBody WhatsAppTemplateMessage message) {
-        //System.out.println(message);
+    public @ResponseBody WhatsAppMessageResponse sendTemplate(@RequestBody WhatsAppTemplateMessage message) {
         return whatsAppService.sendTemplateMessage(message);
     }
 

@@ -1,5 +1,6 @@
 package com.example.gupshuppoc.service;
 
+import com.example.gupshuppoc.model.WhatsAppMessageResponse;
 import com.example.gupshuppoc.model.WhatsAppMessage;
 import com.example.gupshuppoc.model.WhatsAppTemplateMessage;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -44,7 +45,21 @@ public class WhatsAppService {
     }
 
 
-    public String sendWhatsAppMessage(WhatsAppMessage message) {
+    private WhatsAppMessageResponse parseWhatsAppMessageResponse(String response) {
+        try {
+            final WhatsAppMessageResponse whatsAppMessageResponse = objectMapper.readValue(
+                    response,
+                    WhatsAppMessageResponse.class
+            );
+            return whatsAppMessageResponse;
+
+        } catch (JsonProcessingException e) {
+            throw new WhatsAppApiException("Failed to serialize WhatsApp message", e);
+        }
+    }
+
+
+    public WhatsAppMessageResponse sendWhatsAppMessage(WhatsAppMessage message) {
 
         try {
             HttpHeaders headers = createHeaders();
@@ -65,7 +80,7 @@ public class WhatsAppService {
             );
 
             if (responseEntity.getStatusCode().is2xxSuccessful()) {
-                return responseEntity.getBody();
+                return parseWhatsAppMessageResponse(responseEntity.getBody());
             } else {
                 throw new RuntimeException("Failed to send WhatsApp message: " + responseEntity.getStatusCode());
             }
@@ -78,7 +93,7 @@ public class WhatsAppService {
     }
 
 
-    public String sendTemplateMessage(WhatsAppTemplateMessage message) {
+    public WhatsAppMessageResponse sendTemplateMessage(WhatsAppTemplateMessage message) {
 
         try {
             HttpHeaders headers = createHeaders();
@@ -99,7 +114,7 @@ public class WhatsAppService {
             );
 
             if (responseEntity.getStatusCode().is2xxSuccessful()) {
-                return responseEntity.getBody();
+                return parseWhatsAppMessageResponse(responseEntity.getBody());
             } else {
                 throw new WhatsAppApiException("Failed to send WhatsApp message: " + responseEntity.getStatusCode());
             }
